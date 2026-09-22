@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Star Dodger</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <header>
+      <div>
+        <p class="eyebrow">ARCADE GAME</p>
+        <h1>Star Dodger</h1>
+      </div>
+      <div class="stats">
+        <span>Score <strong id="score">0</strong></span>
+        <span>Best <strong id="best">0</strong></span>
+      </div>
+    </header>
+
+    <section class="game-card">
+      <canvas id="game" width="800" height="500" aria-label="Star Dodger game area"></canvas>
+      <div id="message" class="message">
+        <h2>Ready?</h2>
+        <p>Dodge the falling meteors and survive as long as you can.</p>
+        <button id="startButton">Start game</button>
+      </div>
+    </section>
+
+    <div class="controls" aria-label="Touch controls">
+      <button data-key="ArrowLeft" aria-label="Move left">◀</button>
+      <button data-key="ArrowRight" aria-label="Move right">▶</button>
+    </div>
+    <p class="help">Use <kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd> to move.</p>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
