@@ -6,7 +6,16 @@ const message = document.querySelector('#message');
 const startButton = document.querySelector('#startButton');
 
 const keys = new Set();
-const player = { x: 400, y: 440, width: 34, height: 24, speed: 7 };
+const player = {
+  x: 400,
+  y: 440,
+  width: 34,
+  height: 24,
+  velocity: 0,
+  acceleration: 1800,
+  maxSpeed: 430,
+  friction: 2400
+};
 let meteors = [], stars = [], score = 0, running = false, lastTime = 0, spawnTimer = 0;
 let best = Number(localStorage.getItem('starDodgerBest') || 0);
 bestElement.textContent = best;
@@ -15,6 +24,7 @@ for (let i = 0; i < 90; i++) stars.push({ x: Math.random() * canvas.width, y: Ma
 
 function reset() {
   player.x = canvas.width / 2;
+  player.velocity = 0;
   meteors = [];
   score = 0;
   spawnTimer = 0;
@@ -31,6 +41,7 @@ function start() {
 
 function end() {
   running = false;
+  player.velocity = 0;
   if (score > best) {
     best = score;
     localStorage.setItem('starDodgerBest', best);
@@ -48,9 +59,23 @@ function spawnMeteor() {
 }
 
 function update(dt) {
-  const direction = keys.has('ArrowLeft') || keys.has('a') ? -1 : keys.has('ArrowRight') || keys.has('d') ? 1 : 0;
-  player.x += direction * player.speed * 60 * dt;
+  const left = keys.has('ArrowLeft') || keys.has('a');
+  const right = keys.has('ArrowRight') || keys.has('d');
+  const direction = (right ? 1 : 0) - (left ? 1 : 0);
+
+  if (direction) {
+    player.velocity += direction * player.acceleration * dt;
+  } else if (player.velocity > 0) {
+    player.velocity = Math.max(0, player.velocity - player.friction * dt);
+  } else if (player.velocity < 0) {
+    player.velocity = Math.min(0, player.velocity + player.friction * dt);
+  }
+
+  player.velocity = Math.max(-player.maxSpeed, Math.min(player.maxSpeed, player.velocity));
+  player.x += player.velocity * dt;
   player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, player.x));
+  if ((player.x === player.width / 2 && player.velocity < 0) || (player.x === canvas.width - player.width / 2 && player.velocity > 0)) player.velocity = 0;
+
   spawnTimer -= dt;
   if (spawnTimer <= 0) { spawnMeteor(); spawnTimer = Math.max(.25, .8 - score / 300); }
   stars.forEach(star => { star.y += star.speed * dt; if (star.y > canvas.height) star.y = 0; });
@@ -66,19 +91,19 @@ function update(dt) {
 }
 
 function draw() {
-  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  gradient.addColorStop(0, '#101943'); gradient.addColorStop(1, '#17102e');
-  ctx.fillStyle = gradient; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#101943';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
   stars.forEach(star => { ctx.fillStyle = `rgba(255,255,255,${.3 + star.size / 3})`; ctx.fillRect(star.x, star.y, star.size, star.size); });
   meteors.forEach(meteor => {
     ctx.save(); ctx.translate(meteor.x, meteor.y); ctx.rotate(meteor.spin);
-    ctx.fillStyle = '#ff6f91'; ctx.shadowColor = '#ff416c'; ctx.shadowBlur = 18;
+    ctx.fillStyle = '#ff6f91';
     ctx.beginPath();
     for (let i = 0; i < 8; i++) { const r = meteor.size / 2 * (i % 2 ? .75 : 1); const a = i * Math.PI / 4; ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r); }
     ctx.closePath(); ctx.fill(); ctx.restore();
   });
-  ctx.save(); ctx.translate(player.x, player.y); ctx.shadowColor = '#83f7d1'; ctx.shadowBlur = 22;
-  ctx.fillStyle = '#83f7d1'; ctx.beginPath(); ctx.moveTo(0, -player.height / 2); ctx.lineTo(player.width / 2, player.height / 2); ctx.lineTo(0, player.height / 4); ctx.lineTo(-player.width / 2, player.height / 2); ctx.closePath(); ctx.fill(); ctx.restore();
+  ctx.save(); ctx.translate(player.x, player.y);
+  ctx.fillStyle = '#83f7d1'; ctx.beginPath();
+  ctx.moveTo(0, -player.height / 2); ctx.lineTo(player.width / 2, player.height / 2); ctx.lineTo(0, player.height / 4); ctx.lineTo(-player.width / 2, player.height / 2); ctx.closePath(); ctx.fill(); ctx.restore();
 }
 
 function loop(time) {

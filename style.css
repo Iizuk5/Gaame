@@ -12,7 +12,7 @@ body {
   display: grid;
   place-items: center;
   overflow-x: hidden;
-  background: radial-gradient(circle at top, #24205a 0, #090b20 52%, #050611 100%);
+  background: #090b20;
 }
 
 .game-shell { width: min(94vw, 900px); padding: 28px 0; }
@@ -21,17 +21,17 @@ header { display: flex; align-items: end; justify-content: space-between; gap: 2
 h1 { font-size: clamp(2rem, 6vw, 3.6rem); line-height: .95; margin: 0; letter-spacing: -.06em; }
 .stats { display: flex; gap: 18px; color: #a8acd0; font-size: .9rem; }
 .stats strong { display: block; color: #fff; font-size: 1.5rem; text-align: right; }
-.game-card { position: relative; overflow: hidden; border: 1px solid #494580; border-radius: 18px; background: #111431; box-shadow: 0 24px 70px #0008; }
+.game-card { position: relative; overflow: hidden; border: 1px solid #494580; border-radius: 8px; background: #111431; }
 canvas { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; }
-.message { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 24px; background: #080a1dcc; backdrop-filter: blur(4px); }
+.message { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 24px; background: #080a1dee; }
 .message.hidden { display: none; }
 .message h2 { font-size: 2.2rem; margin: 0 0 8px; }
 .message p { max-width: 340px; margin: 0 auto 20px; color: #c3c6e7; }
-button { border: 0; border-radius: 12px; padding: 12px 22px; color: #06131a; background: #83f7d1; font: inherit; font-weight: 800; cursor: pointer; box-shadow: 0 5px 0 #43ad96; transition: transform .12s, filter .12s; }
-button:hover { filter: brightness(1.1); transform: translateY(-1px); }
-button:active { transform: translateY(3px); box-shadow: 0 2px 0 #43ad96; }
+button { border: 1px solid #83f7d1; border-radius: 6px; padding: 12px 22px; color: #06131a; background: #83f7d1; font: inherit; font-weight: 800; cursor: pointer; transition: filter .15s ease, background .15s ease; }
+button:hover { filter: brightness(1.1); }
+button:active { filter: brightness(.95); }
 .controls { display: flex; justify-content: center; gap: 16px; margin-top: 16px; }
 .controls button { width: 74px; padding: 12px; font-size: 1.4rem; }
 .help { color: #a8acd0; text-align: center; font-size: .9rem; margin: 14px 0 0; }
-kbd { padding: 3px 7px; border: 1px solid #555a87; border-radius: 5px; color: #fff; background: #1b1d3e; }
+kbd { padding: 3px 7px; border: 1px solid #555a87; border-radius: 3px; color: #fff; background: #1b1d3e; }
 @media (min-width: 650px) { .controls { display: none; } }
