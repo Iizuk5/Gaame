@@ -30,8 +30,12 @@ canvas { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; }
 button { border: 1px solid #83f7d1; border-radius: 6px; padding: 12px 22px; color: #06131a; background: #83f7d1; font: inherit; font-weight: 800; cursor: pointer; transition: filter .15s ease, background .15s ease; }
 button:hover { filter: brightness(1.1); }
 button:active { filter: brightness(.95); }
-.controls { display: flex; justify-content: center; gap: 16px; margin-top: 16px; }
+.controls { display: grid; grid-template-columns: repeat(3, minmax(0, 74px)); justify-content: center; gap: 12px; margin-top: 16px; }
 .controls button { width: 74px; padding: 12px; font-size: 1.4rem; }
+.controls button:nth-child(1) { grid-column: 2; }
+.controls button:nth-child(2) { grid-column: 1; }
+.controls button:nth-child(3) { grid-column: 3; }
+.controls button:nth-child(4) { grid-column: 2; }
 .help { color: #a8acd0; text-align: center; font-size: .9rem; margin: 14px 0 0; }
 kbd { padding: 3px 7px; border: 1px solid #555a87; border-radius: 3px; color: #fff; background: #1b1d3e; }
 @media (min-width: 650px) { .controls { display: none; } }
